@@ -56,7 +56,7 @@ class Employee(CustomUser):
 
 
 class Template(models.Model):
-    id = models.CharField(max_length=10,null=True)
+    id = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=200, null=True)
     archived = models.BooleanField(default=False)
     start_time = models.DateTimeField(auto_now_add=True)
@@ -72,9 +72,8 @@ class Request(models.Model):
     ("APPROVED", "Approved"),
     ]
 
-
-    id = models.CharField(max_length=10,null=True)
-    template_id = models.OneToOneField(Template)
+    id = models.CharField(max_length=10, primary_key=True)
+    template_id = models.OneToOneField(Template, null=True, on_delete=models.SET_NULL)
     response = models.TextField(max_length=500, null=True)
     status = models.CharField(max_length=20, null=True, choices=STATUS)
     participants = models.ForeignKey(CustomUser, null=True, on_delete=models.CASCADE)

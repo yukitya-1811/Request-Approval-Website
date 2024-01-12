@@ -11,7 +11,7 @@
 
             <form action = "{% url 'deleteRequest' request.id %}"method="POST">
             {% csrf_token %}
-            <a class="btn btn-sm btn-warning" href="{% url 'home' %}">Cancel</a>
+            <a class="btn btn-sm btn-warning" href="{% url 'approvals' %}">Cancel</a>
             <input class="btn btn-sm btn-danger" type="submit" name="confirm"></a>
             </form>
         </div>    

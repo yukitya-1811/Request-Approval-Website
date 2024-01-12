@@ -10,5 +10,6 @@ urlpatterns = [
     path('stats/', views.statsPage, name='stats'),
     path('apply/', views.applyPage, name="apply"),
     path('appview/<str:pk>', views.viewPage, name="appview"),
+    path('delete/<str:pk>', views.deleteRequest, name="deleteRequest"),
     path('logout/', views.logoutPage, name='logout'),
 ]

@@ -7,14 +7,15 @@
       Application
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{application.template_id}}</h5>
+      <h5 class="card-title">{{application.template_id}} - {{application.applicant}}</h5>
       <p class="card-text">{{application.response}}</p>
       <p class="info">{{application.status}}</p>
+        <a href="{% url 'deleteRequest' application.id %}" class="btn btn-danger">Delete</a>
+      <a href="#" class="btn btn-success">Approve</a>
       
-      <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
     <div class="card-footer text-muted">
-      2 days ago
+      {{application.template_id.start_time}}
     </div>
   </div>
 

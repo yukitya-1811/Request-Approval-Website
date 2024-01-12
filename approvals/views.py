@@ -4,10 +4,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .authenticate import EmailBackend
 from .models import *
-
+from .decorators import *
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 # Create your views here.
 
+@unauthenticated_user
 def loginPage(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -23,6 +26,7 @@ def loginPage(request):
 
     return render(request, 'approvals/loginPage.html')
 
+@unauthenticated_user
 def registerPage(request):
 
     form = CreateUserForm()
@@ -50,10 +54,12 @@ def logoutPage(request):
     logout(request)
     return redirect('login')
 
-
+@login_required
 def home(request):
     return render(request, 'approvals/homepage.html')
 
+@login_required
+@allowed_users(allowed_roles=['employees', 'admin'])
 def approvalPage(request):
 
     user_requests = Request.objects.all()
@@ -64,15 +70,37 @@ def approvalPage(request):
     }
     return render(request, 'approvals/approvals.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['employees', 'admin'])
 def statsPage(request):
-    return render(request, 'approvals/stats.html')
+    users = User.objects.all().count()
+    reqs = Request.objects.all().count()
+    studs = Student.objects.all().count()
+    emps = Employee.objects.all().count()
+    temps = Template.objects.all().count()
 
+    context = {
+        'users':users,
+        'reqs':reqs,
+        'studs':studs,
+        'emps':emps,
+        'temps':temps,
+    }
+
+    return render(request, 'approvals/stats.html', context)
+
+@login_required
 def applyPage(request):
 
     if request.method == "POST":
         form = ApplicationForm(request.POST)
         if form.is_valid():
             form.save()
+
+            content = request.POST.get('response')
+            req = Request.objects.get(response = content)
+            req.applicant = request.user
+            req.save()
             return redirect("/")
 
     form = ApplicationForm()
@@ -81,9 +109,25 @@ def applyPage(request):
     }
     return render(request, "approvals/apply.html", context)
 
+@login_required
+@allowed_users(allowed_roles=['employees', 'admin'])
 def viewPage(request, pk):
     application = Request.objects.get(id=pk)
     context = {
         'application':application,
     }
     return render(request, 'approvals/approvalView.html', context)
+
+def deleteRequest(request, pk):
+    req = Request.objects.get(id=pk)
+    if request.method == "POST":
+        req.delete()
+        return redirect("approvals")
+    
+    context = { 'request':req, }
+    return render(request, 'approvals/deletePage.html', context)
+
+def approveRequest(request, pk):
+    pass
+
+    

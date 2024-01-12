@@ -76,7 +76,9 @@ class Template(models.Model):
 class Request(models.Model):
     STATUS = [
     ("WAITING", "Waiting for approval"),
-    ("APPROVED", "Approved"),
+    ("APPROVED_MIS", "Approved by MIS Officer"),
+    ("APPROVED_HOD", "Approved by Head of Department"),
+    ("APPROVED_DEAN", "Approved by Dean"),
     ]
 
     template_id = models.ForeignKey(Template, null=True, on_delete=models.SET_NULL)

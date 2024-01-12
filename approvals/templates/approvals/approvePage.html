@@ -1,0 +1,26 @@
+{% extends 'approvals/homepage.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <p>Are you sure you want to approve? "{{request}}"</p>
+
+            <form action = "{% url 'approveRequest' request.id %}"method="POST">
+            {% csrf_token %}
+            <a class="btn btn-sm btn-warning" href="{% url 'approvals' %}">Cancel</a>
+            <input class="btn btn-sm btn-success" type="submit" name="confirm"></a>
+            </form>
+            {% for message in messages %}
+                <p id="messages">{{message}}</p>
+            {% endfor %}
+        </div>    
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -13,6 +13,7 @@
           <h5 class="card-title">{{user_request.template_id}} - {{user_request.applicant}}</h5>
           <h6 class="card-text"></h6>
           <p class="card-text">{{user_request.response}}</p>
+          <p class="card-text">{{user_request.status}}</p>
           <a href="{% url 'appview' user_request.id %}" class="btn btn-primary">View</a>
         </div>
       </div>

@@ -33,6 +33,18 @@ class CustomUser(models.Model):
     email = models.CharField(max_length=200, null=True)
 
 
+class Role(models.Model):
+    ROLES = [
+    ("MIS", "MIS Officer"),
+    ("HOD", "Head of Department"),
+    ("DEAN", "Dean"),
+]
+    name = models.CharField(max_length=20, null=True, choices=ROLES)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.email
+    
 class Student(CustomUser):
   
     student_id = models.CharField(max_length=20, null=True, unique=True)
@@ -75,15 +87,15 @@ class Template(models.Model):
 
 class Request(models.Model):
     STATUS = [
-    ("WAITING", "Waiting for approval"),
-    ("APPROVED_MIS", "Approved by MIS Officer"),
-    ("APPROVED_HOD", "Approved by Head of Department"),
-    ("APPROVED_DEAN", "Approved by Dean"),
+    ("Waiting for approval", "Waiting for approval"),
+    ("Approved by MIS Officer", "Approved by MIS Officer"),
+    ("Approved by Head of Department", "Approved by Head of Department"),
+    ("Approved by Dean", "Approved by Dean"),
     ]
 
     template_id = models.ForeignKey(Template, null=True, on_delete=models.SET_NULL)
     response = models.TextField(max_length=500, null=True)
-    status = models.CharField(max_length=20, null=True, choices=STATUS)
+    status = models.CharField(max_length=100, null=True, default='Waiting for approval', choices=STATUS)
     applicant = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     
     def __str__(self):

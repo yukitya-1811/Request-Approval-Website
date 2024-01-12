@@ -7,4 +7,4 @@ admin.site.register(Student)
 admin.site.register(Employee)
 admin.site.register(Template)
 admin.site.register(Request)
-
+admin.site.register(Role)

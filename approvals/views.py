@@ -1,7 +1,43 @@
 from django.shortcuts import redirect, render
-from .forms import ApplicationForm
+from .forms import ApplicationForm, CreateUserForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+
+
 
 # Create your views here.
+
+def loginPage(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username OR password is incorrect')
+
+    return render(request, 'approvals/loginPage.html')
+
+def registerPage(request):
+
+    form = CreateUserForm()
+
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('email')
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
+    
+    context = {
+        "form":form,
+    }
+        
+    return render(request, 'approvals/registerPage.html', context)
 
 def home(request):
     return render(request, 'approvals/homepage.html')

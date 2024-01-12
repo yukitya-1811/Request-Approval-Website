@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from .forms import ApplicationForm, CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-
+from .authenticate import EmailBackend
 
 
 # Create your views here.
@@ -12,12 +12,13 @@ def loginPage(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = authenticate(request, email=email, password=password)
+        backend = EmailBackend()
+        user = EmailBackend.authenticate(backend, request=request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('/')
         else:
-            messages.error(request, 'Username OR password is incorrect')
+            messages(request, 'Username OR password is incorrect')
 
     return render(request, 'approvals/loginPage.html')
 
@@ -38,6 +39,11 @@ def registerPage(request):
     }
         
     return render(request, 'approvals/registerPage.html', context)
+
+def logoutPage(request):
+    logout(request)
+    return redirect('login')
+
 
 def home(request):
     return render(request, 'approvals/homepage.html')

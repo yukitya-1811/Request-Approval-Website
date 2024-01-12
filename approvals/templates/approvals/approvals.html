@@ -1,6 +1,22 @@
 {% extends 'approvals/homepage.html' %}
 {% block content %}
 
-<h2> Approvals </h2>
 
+
+<h2> Approvals </h2>
+<div class="row">
+    {% for user_request in user_requests %}
+    <div class="col-sm-6">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{user_request.template_id}}</h5>
+          <h6 class="card-text"></h6>
+          <p class="card-text">{{user_request.response}}</p>
+          <a href="{% url 'appview' user_request.id %}" class="btn btn-primary">View</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 {% endblock %}

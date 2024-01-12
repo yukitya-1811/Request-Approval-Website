@@ -3,6 +3,7 @@ from .forms import ApplicationForm, CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .authenticate import EmailBackend
+from .models import *
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ def loginPage(request):
             login(request, user)
             return redirect('/')
         else:
-            messages(request, 'Username OR password is incorrect')
+            messages.error(request, '!! Username OR password is incorrect !!')
 
     return render(request, 'approvals/loginPage.html')
 
@@ -29,9 +30,14 @@ def registerPage(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('email')
-            messages.success(request, 'Account was created for ' + username)
+            form.save()
+            email = form.cleaned_data.get('email')
+
+            user = User.objects.get(email=email)
+            user.username = email
+            user.save()
+
+            messages.success(request, 'Account was created for ' + email)
             return redirect('login')
     
     context = {
@@ -49,7 +55,14 @@ def home(request):
     return render(request, 'approvals/homepage.html')
 
 def approvalPage(request):
-    return render(request, 'approvals/approvals.html')
+
+    user_requests = Request.objects.all()
+    users = CustomUser.objects.all()
+    context = {
+        'user_requests': user_requests,
+        'users': users,
+    }
+    return render(request, 'approvals/approvals.html', context)
 
 def statsPage(request):
     return render(request, 'approvals/stats.html')
@@ -67,3 +80,10 @@ def applyPage(request):
         'form': form,
     }
     return render(request, "approvals/apply.html", context)
+
+def viewPage(request, pk):
+    application = Request.objects.get(id=pk)
+    context = {
+        'application':application,
+    }
+    return render(request, 'approvals/approvalView.html', context)

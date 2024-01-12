@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 DEPARTMENTS = [
@@ -21,9 +21,9 @@ PROGRAMS = [
     ]
 
 ROLES = [
-    ("MIS", "MIS Officer"),
-    ("HOD", "Head of Department"),
-    ("DEAN", "Dean"),
+    ("1", "MIS Officer"),
+    ("2", "Head of Department"),
+    ("3", "Dean"),
 ]
 
 
@@ -56,10 +56,18 @@ class Employee(CustomUser):
 
 
 class Template(models.Model):
+
+    PARTICIPANTS = [
+    ("1", "MIS Officer"),
+    ("2", "Head of Department"),
+    ("3", "Dean"),
+    ]
+
     name = models.CharField(max_length=200, null=True)
     archived = models.BooleanField(default=False)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField
+    participants = models.CharField(max_length=1, null=True, choices=PARTICIPANTS)
 
     def __str__(self):
         return self.name
@@ -71,8 +79,10 @@ class Request(models.Model):
     ("APPROVED", "Approved"),
     ]
 
-    template_id = models.OneToOneField(Template, null=True, on_delete=models.SET_NULL)
+    template_id = models.ForeignKey(Template, null=True, on_delete=models.SET_NULL)
     response = models.TextField(max_length=500, null=True)
     status = models.CharField(max_length=20, null=True, choices=STATUS)
-    participants = models.ForeignKey(CustomUser, null=True, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     
+    def __str__(self):
+        return self.template_id.name

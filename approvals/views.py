@@ -16,7 +16,11 @@ def loginPage(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        backend = EmailBackend()
+        backend = EmailBackend()    # Custom class which contains custom authentication functionality
+
+        # Django uses username by default for authentication, but I decided to use
+        # email which is what we use for college applications
+
         user = EmailBackend.authenticate(backend, request=request, username=email, password=password)
         if user is not None:
             login(request, user)
@@ -37,8 +41,10 @@ def registerPage(request):
             form.save()
             email = form.cleaned_data.get('email')
 
+            # initializes a user model with blank username
+
             user = User.objects.get(email=email)
-            user.username = email
+            user.username = email # sets the username to be equal to email
             user.save()
 
             messages.success(request, 'Account was created for ' + email)
@@ -64,7 +70,7 @@ def home(request):
 def approvalPage(request):
     currentuser = request.user.id
     try:
-        position = Role.objects.get(user=currentuser)
+        position = Role.objects.get(user=currentuser) # Only employees are allowed to view the requests of all students
         if position is not None:
             user_requests = Request.objects.all()
             users = CustomUser.objects.all()
@@ -72,7 +78,8 @@ def approvalPage(request):
             'user_requests': user_requests,
             'users': users,
             }
-        else:
+        else: # Students may only view their own requests
+            user_requests = Request.objects.all()
             context = {
             'user_requests': user_requests,
             }
@@ -113,9 +120,9 @@ def applyPage(request):
             form.save()
 
             content = request.POST.get('response')
-            req = Request.objects.get(response = content)
+            req = Request.objects.get(response = content) # Fetches the requests via the content in them. Not the best way to tackling this I admit
             req.applicant = request.user
-            req.save()
+            req.save() # Sets the applicant of the form as the signed in user
             return redirect("/")
 
     form = ApplicationForm()
@@ -154,7 +161,7 @@ def approveRequest(request, pk):
 
     req = Request.objects.get(id=pk)
     if request.method == "POST":
-        flag = checkUserPerms(request, pk)
+        flag = checkUserPerms(request, pk) # Function to verify whether the logged in user should be able to approve the requests
         if flag == 0:
             req.status = "Approved by MIS Officer"
             req.save()
@@ -191,4 +198,8 @@ def checkUserPerms(request, pk):
         return 2
     else:
         return
+    
+    # Not the best way to handle such functionality, as everytime a new position is added
+    # will have to write out a lot of code to implement it. But it works for now, assuming
+    # that positions are not frequently changed/added
     

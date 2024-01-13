@@ -3,12 +3,12 @@
 
 
 
-<h2> Approvals </h2>
+<h2 class="text-white"> Approvals </h2>
 <div class="row">
     {% for user_request in user_requests %}
     <div class="col-sm-6">
 
-      <div class="card">
+      <div class="card text-white bg-dark mb-3">
         <div class="card-body">
           <h5 class="card-title">{{user_request.template_id}} - {{user_request.applicant}}</h5>
           <h6 class="card-text"></h6>

@@ -60,15 +60,28 @@ def home(request):
     return render(request, 'approvals/homepage.html')
 
 @login_required
-@allowed_users(allowed_roles=['employees', 'admin'])
 def approvalPage(request):
+    currentuser = request.user.id
+    try:
+        position = Role.objects.get(user=currentuser)
+        if position is not None:
+            user_requests = Request.objects.all()
+            users = CustomUser.objects.all()
+            context = {
+            'user_requests': user_requests,
+            'users': users,
+            }
+        else:
+            context = {
+            'user_requests': user_requests,
+            }
 
-    user_requests = Request.objects.all()
-    users = CustomUser.objects.all()
-    context = {
-        'user_requests': user_requests,
-        'users': users,
-    }
+    except:
+        user_requests = Request.objects.filter(applicant=request.user)
+        context = {
+            'user_requests': user_requests,
+            }
+
     return render(request, 'approvals/approvals.html', context)
 
 @login_required

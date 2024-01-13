@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,12 +10,42 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
-  <body>
-    {% include 'approvals/navbar.html' %}
+    <style>
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        .IRIS{
+            background-color: #1a1a1a !important 
+        }
+
+        .center-img{
+            filter: invert(89.7%);
+            margin-left: 400px;
+            margin-right: 400px;
+            margin-top:50px;
+        }
+
+        
+
+    </style>
+    </head>
+  <body class="IRIS">
+    {% include 'approvals/navbar.html' %}   
+    {% if request.path == "/" %}
+    
+    <img class="center-img" src={% static 'bigiris.png'%} width="800" height="400" alt=""></img>
+    <a href="{% url 'apply' %}" type="button" class="btn btn-dark btn-lg btn-block">Request for approval</a>
+    <a href="{% url 'approvals' %}" type="button" class="btn btn-dark btn-lg btn-block">Check request status</a>
+
+
+    {% endif %}
     {% block content %}
     {% endblock %}
-    <hr>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -127,8 +127,12 @@ def applyPage(request):
 @allowed_users(allowed_roles=['employees', 'admin'])
 def viewPage(request, pk):
     application = Request.objects.get(id=pk)
+    user = request.user.id
+    position = Role.objects.get(user=user)
+    
     context = {
         'application':application,
+        'position':position,
     }
     return render(request, 'approvals/approvalView.html', context)
 

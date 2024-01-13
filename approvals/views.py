@@ -137,11 +137,15 @@ def viewPage(request, pk):
     application = Request.objects.get(id=pk)
     user = request.user.id
     position = Role.objects.get(user=user)
+    participants = application.template_id.participants
     
     context = {
+        'participants':participants,
         'application':application,
         'position':position,
     }
+    #print(participants) # --> Debugging
+    #print(position.name)
     return render(request, 'approvals/approvalView.html', context)
 
 @login_required
@@ -190,11 +194,11 @@ def checkUserPerms(request, pk):
     req = Request.objects.get(id=pk)
     position = Role.objects.get(user=user)
 
-    if req.status == "Waiting for approval" and position.name == 'MIS':
+    if req.status == "Waiting for approval" and position.name == '1':
         return 0
-    elif req.status == "Approved by MIS Officer" and position.name == 'HOD':
+    elif req.status == "Approved by MIS Officer" and position.name == '2':
         return 1
-    elif req.status == "Approved by Head of Department" and position.name == 'DEAN':
+    elif req.status == "Approved by Head of Department" and position.name == '3':
         return 2
     else:
         return

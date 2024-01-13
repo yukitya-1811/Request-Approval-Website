@@ -35,9 +35,9 @@ class CustomUser(models.Model):
 
 class Role(models.Model):
     ROLES = [
-    ("MIS", "MIS Officer"),
-    ("HOD", "Head of Department"),
-    ("DEAN", "Dean"),
+    ("1", "MIS Officer"),
+    ("2", "Head of Department"),
+    ("3", "Dean"),
 ]
     name = models.CharField(max_length=20, null=True, choices=ROLES)
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
@@ -46,7 +46,6 @@ class Role(models.Model):
         return self.user.email
     
 class Student(CustomUser):
-  
     student_id = models.CharField(max_length=20, null=True, unique=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     department = models.CharField(max_length=100, null=True, choices=DEPARTMENTS)
@@ -71,15 +70,15 @@ class Template(models.Model):
 
     PARTICIPANTS = [
     ("1", "MIS Officer"),
-    ("2", "Head of Department"),
-    ("3", "Dean"),
+    ("12", "Head of Department"),
+    ("123", "Dean"),
     ]
 
     name = models.CharField(max_length=200, null=True)
     archived = models.BooleanField(default=False)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField
-    participants = models.CharField(max_length=1, null=True, choices=PARTICIPANTS)
+    participants = models.CharField(max_length=4, null=True, choices=PARTICIPANTS)
 
     def __str__(self):
         return self.name
@@ -93,7 +92,7 @@ class Request(models.Model):
     ("Approved by Dean", "Approved by Dean"),
     ]
 
-    template_id = models.ForeignKey(Template, null=True, on_delete=models.SET_NULL)
+    template_id = models.ForeignKey(Template, null=True, on_delete=models.CASCADE)
     response = models.TextField(max_length=500, null=True)
     status = models.CharField(max_length=100, null=True, default='Waiting for approval', choices=STATUS)
     applicant = models.ForeignKey(User, null=True, on_delete=models.CASCADE)

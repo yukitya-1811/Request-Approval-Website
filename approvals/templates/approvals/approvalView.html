@@ -14,17 +14,17 @@
       <p class="info">{{application.status}}</p>
       <hr>
 
-      {% if application.status == "Waiting for approval" and position.name == "MIS"%}
+      {% if application.status == "Waiting for approval" and position.name == "1" and (position.name in participants)  %}
       <a href="{% url 'deleteRequest' application.id %}" class="btn btn-danger">Delete</a>
       <a href="{% url 'approveRequest' application.id %}" class="btn btn-success">Approve</a>
       {% endif %}
 
-      {% if application.status == "Approved by MIS Officer" and position.name == "HOD"%}
+      {% if application.status == "Approved by MIS Officer" and position.name == "2" and (position.name in participants) %}
       <a href="{% url 'deleteRequest' application.id %}" class="btn btn-danger">Delete</a>
       <a href="{% url 'approveRequest' application.id %}" class="btn btn-success">Approve</a>
       {% endif %}
 
-      {% if application.status == "Approved by Head of Department" and position.name == "DEAN"%}
+      {% if application.status == "Approved by Head of Department" and position.name == "3" and (position.name in participants) %}
       <a href="{% url 'deleteRequest' application.id %}" class="btn btn-danger">Delete</a>
       <a href="{% url 'approveRequest' application.id %}" class="btn btn-success">Approve</a>
       {% endif %}

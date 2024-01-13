@@ -20,7 +20,7 @@ def loginPage(request):
         user = EmailBackend.authenticate(backend, request=request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return redirect('home')
         else:
             messages.error(request, '!! Username OR password is incorrect !!')
 
@@ -51,6 +51,7 @@ def registerPage(request):
         
     return render(request, 'approvals/registerPage.html', context)
 
+@login_required
 def logoutPage(request):
     logout(request)
     return redirect('login')
@@ -89,8 +90,8 @@ def approvalPage(request):
 def statsPage(request):
     users = User.objects.all().count()
     reqs = Request.objects.all().count()
-    studs = Student.objects.all().count()
-    emps = Employee.objects.all().count()
+    emps = User.objects.filter(groups__name="employees").count()
+    studs = User.objects.filter(groups__name="students").count()
     temps = Template.objects.all().count()
 
     context = {
@@ -136,6 +137,8 @@ def viewPage(request, pk):
     }
     return render(request, 'approvals/approvalView.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['employees', 'admin'])
 def deleteRequest(request, pk):
     req = Request.objects.get(id=pk)
     if request.method == "POST":
@@ -145,6 +148,8 @@ def deleteRequest(request, pk):
     context = { 'request':req, }
     return render(request, 'approvals/deletePage.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['employees', 'admin'])
 def approveRequest(request, pk):
 
     req = Request.objects.get(id=pk)

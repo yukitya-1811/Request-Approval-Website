@@ -110,8 +110,8 @@
 					</form>
 				</div>
                 <div class="mt-4 text-white text-center">
-                    {% for message in messages %}
-                        <p>{{form.errors}}</p>
+                    {% for error in form.errors %}
+                        <p>{{error.name}}</p>
                     {% endfor %}
                     </div>
 				<div class="mt-4 text-white">

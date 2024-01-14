@@ -38,7 +38,14 @@
     {% if request.path == "/" %}
     
     <img class="center-img" src={% static 'bigiris.png'%} width="800" height="400" alt=""></img>
+    {% if request.user in adms or request.user in emps %}
+    <a href="{% url 'create' %}" type="button" class="btn btn-dark btn-lg btn-block">Create new template</a>
+    {% endif %}
+
+    {% if request.user not in adms and request.user not in emps %}
     <a href="{% url 'apply' %}" type="button" class="btn btn-dark btn-lg btn-block">Request for approval</a>
+    {% endif %}
+    
     <a href="{% url 'approvals' %}" type="button" class="btn btn-dark btn-lg btn-block">Check request status</a>
 
 

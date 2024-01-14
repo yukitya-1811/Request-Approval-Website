@@ -1,0 +1,21 @@
+
+{% extends 'approvals/homepage.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+<h2 class = "text-center text-white"> Create Template </h2>
+<div class="row">
+
+    <div class="col-md-6">
+        <form method="POST" action="" class="text-white">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-dark" type="submit" name="submit">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

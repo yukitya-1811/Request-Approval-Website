@@ -69,9 +69,9 @@ class Employee(CustomUser):
 class Template(models.Model):
 
     PARTICIPANTS = [
-    ("1", "MIS Officer"),
-    ("12", "Head of Department"),
-    ("123", "Dean"),
+    ("1", "MIS Officer only"),
+    ("12", "HOD, MIS Officer"),
+    ("123", "Dean Academic, HOD, MIS Officer"),
     ]
 
     name = models.CharField(max_length=200, null=True)

@@ -13,3 +13,8 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2']
+
+class TemplateForm(ModelForm):
+    class Meta:
+        model = Template
+        fields = ['name', 'participants']

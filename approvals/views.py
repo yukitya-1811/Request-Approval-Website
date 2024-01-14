@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .forms import ApplicationForm, CreateUserForm
+from .forms import ApplicationForm, CreateUserForm, TemplateForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .authenticate import EmailBackend
@@ -64,7 +64,14 @@ def logoutPage(request):
 
 @login_required
 def home(request):
-    return render(request, 'approvals/homepage.html')
+    emps = User.objects.filter(groups__name="employees")
+    adms = User.objects.filter(groups__name="admin")
+
+    context = {
+        "adms":adms,
+        "emps": emps,
+    }
+    return render(request, 'approvals/homepage.html', context)
 
 @login_required
 def approvalPage(request):
@@ -206,4 +213,20 @@ def checkUserPerms(request, pk):
     # Not the best way to handle such functionality, as everytime a new position is added
     # will have to write out a lot of code to implement it. But it works for now, assuming
     # that positions are not frequently changed/added
+
+@allowed_users(allowed_roles=['employees', 'admin'])
+def createTemplate(request):
+    if request.method == "POST":
+        form = TemplateForm(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('home')
+    
+    form = TemplateForm()
+
+    context = {
+
+        "form": form,
+    }
+    return render(request, "approvals/createPage.html", context)
     

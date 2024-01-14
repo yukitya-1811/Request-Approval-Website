@@ -4,7 +4,17 @@
 
 
 <h2 class="text-center text-white"> Approvals </h2>
+    {% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" >        
+        {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    </div>  
+    {% endfor %}
+
 <div class="row">
+
     {% for user_request in user_requests %}
     <div class="col-sm-6">
 

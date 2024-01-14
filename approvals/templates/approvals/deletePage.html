@@ -2,20 +2,21 @@
 {% block content %}
 
 <br>
+<br>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
+<div class="center">
+ 
+        <div class="card bg-dark text-white card-body">
 
-            <p>Are you sure you want to delete "{{request}}"</p>
+            <p>Are you sure you want to delete? "{{request}}"</p>
 
-            <form action = "{% url 'deleteRequest' request.id %}"method="POST">
+            <form action = "{% url 'approveRequest' request.id %}"method="POST">
             {% csrf_token %}
             <a class="btn btn-sm btn-warning" href="{% url 'approvals' %}">Cancel</a>
             <input class="btn btn-sm btn-danger" type="submit" name="confirm"></a>
             </form>
         </div>    
-    </div>
+
 </div>
 
 

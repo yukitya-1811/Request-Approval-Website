@@ -40,8 +40,36 @@ iii. admin
 9. Employee and admin users can create new templates
 
 ***
-## 4. Planned features
+
+## 4. Video demo
+
+
+https://github.com/yukitya-1811/IRIS_Rec23_221EC203_Django/assets/113475659/4d4609d5-aaaa-4311-ae9e-ed57cb31d6eb
+
+***
+
+
+## 5. Planned features
 
 1. Department wise segregation of all users and requests (eg. Chemical, Electronics, Computer Science, etc)
 2. Making participants of a template a checkbox field instead of a dropdown list
 3. Ability to archive a request after it has been approved by the required participants
+4. Feature to send back a request to a user and ask them to make changes to it
+5. Feature for employee users to comment on requests before approving or deleting them
+6. Document upload functionality
+
+***
+## 6. Known bugs
+1. Trying to access other pages through the login page without logging in returns a 404 error instead of redirecting the user back to the login page
+Fix :
+
+## 7. References
+1. Django docs - https://docs.djangoproject.com/en/5.0/
+2. Bootstrap 4.0 docs - https://getbootstrap.com/docs/4.0
+
+## 8. Screenshots
+![homepage](https://github.com/yukitya-1811/IRIS_Rec23_221EC203_Django/assets/113475659/30b218a8-6f50-4e1c-bfe8-753b65a5c450)
+
+![approvals](https://github.com/yukitya-1811/IRIS_Rec23_221EC203_Django/assets/113475659/46ade3f7-ee18-40ff-9eac-318ca6e3ba18)
+
+
